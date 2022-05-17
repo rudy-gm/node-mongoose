@@ -1,35 +1,34 @@
-const mongoose =require('mongoose');
-const Campsite = require('./modules/campsite');
+const mongoose = require("mongoose");
+const Campsite = require("./modules/campsite");
 
-const url = 'mongodb://localhost:27017/nucampsite';
+const url = "mongodb://localhost:27017/nucampsite";
 const connect = mongoose.connect(url, {
-    useCreateIndex: true,
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-connect.then(()=>{
-    console.log('Connected correctly to server');
+connect.then(() => {
+  console.log("Connected correctly to server");
 
-    const newCampsite = new Campsite({
-        name: 'React Lake Campground',
-        description: 'test'
-    });
+  Campsite.create({
+    name: "React Lake Campground",
+    description: "test",
+  })
 
-    newCampsite.save()
-    .then(campsite =>{
-        console.log(campsite)
-        return Campsite.find();
+    .then((campsite) => {
+      console.log(campsite);
+      return Campsite.find();
     })
-    .then( campsites =>{
-        console.log(campsites);
-        return Campsite.deleteMany();
+    .then((campsites) => {
+      console.log(campsites);
+      return Campsite.deleteMany();
     })
-    .then(()=>{
-        return mongoose.connection.close();
+    .then(() => {
+      return mongoose.connection.close();
     })
-    .catch( err =>{
-        console.log(err);
-        mongoose.connection.close();
+    .catch((err) => {
+      console.log(err);
+      mongoose.connection.close();
     });
 });
